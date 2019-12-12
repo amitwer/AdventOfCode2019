@@ -8,8 +8,8 @@ public enum  CommandType {
     MULTIPLY(2,3, true, false),
     INPUT(3,1, true, false),
     OUTPUT(4,1, false, false),
-    JUMP_TRUE(5,1, false, true),
-    JUMP_FALSE(6,1, false, true),
+    JUMP_TRUE(5,2, false, true),
+    JUMP_FALSE(6,2, false, true),
     LESS_THAN(7,3, true, false),
     EQ(8,3, true, false),
 

@@ -2,6 +2,7 @@ package day5;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class CommandToken {
     private final List<Boolean> isImmediateList;
@@ -23,7 +24,9 @@ public class CommandToken {
     }
 
     public boolean isParamByValue(int paramPosition) {
-        return isImmediateList.get(paramPosition) || paramPosition == params.length - 1;
+        return isImmediateList.get(paramPosition) ||
+                (paramPosition == params.length - 1 &&
+                        !(type.isJump()&&isJumpConditionTrue()));
     }
 
     public int getNumOfParameters() {
@@ -57,13 +60,11 @@ public class CommandToken {
 //                System.out.println(String.format("multiply %d*%d and storing in %d", params[0], params[1], params[2]));
                 return params[0] * params[1];
             case INPUT:
-//                Scanner scanner = new Scanner(System.in);
-//                System.out.println("Please insert a number");
-//                return scanner.nextInt();
-                return 1;
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Please insert a number");
+                return scanner.nextInt();
             case OUTPUT:
-//                System.out.println(String.format("Output from %d", params[0]));
-                return input[params[0]];
+                return isParamByValue(0)?params[0]:input[params[0]];
             case JUMP_TRUE:
             case JUMP_FALSE:
                 return params[1];
@@ -80,6 +81,9 @@ public class CommandToken {
     }
 
     public boolean isJump() {
+        if (type.isJump()) {
+            System.out.println("Command is jump - " + type + " value is " + params[0] + "And jump decistion is <" + isJumpConditionTrue() + ">");
+        }
         return type.isJump() && isJumpConditionTrue();
     }
 
