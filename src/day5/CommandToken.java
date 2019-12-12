@@ -23,7 +23,10 @@ public class CommandToken {
         return type;
     }
 
-    public boolean isParamByValue(int paramPosition) {
+    public boolean isImmediate(int paramPosition) {
+        if (type == CommandType.OUTPUT){
+            return isImmediateList.get(paramPosition);
+        }
         return isImmediateList.get(paramPosition) ||
                 (paramPosition == params.length - 1 &&
                         !(type.isJump()&&isJumpConditionTrue()));
@@ -64,7 +67,7 @@ public class CommandToken {
                 System.out.println("Please insert a number");
                 return scanner.nextInt();
             case OUTPUT:
-                return isParamByValue(0)?params[0]:input[params[0]];
+                return params[0];
             case JUMP_TRUE:
             case JUMP_FALSE:
                 return params[1];
