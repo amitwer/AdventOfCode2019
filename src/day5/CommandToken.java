@@ -2,17 +2,18 @@ package day5;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CommandToken {
     private final List<Boolean> isImmediateList;
     private CommandType type;
     private int[] params;
+    Input inputCommand;
 
     public CommandToken(CommandType type, int modes) {
         this.type = type;
         this.params = new int[type.getNumOfParameters()];
         this.isImmediateList = new LinkedList<>();
+        inputCommand = new InputFromUser();
         for (int i = 0; i < type.getNumOfParameters(); i++) {
             isImmediateList.add(modes % 10 == 1);
             modes = modes / 10;
@@ -57,15 +58,11 @@ public class CommandToken {
             case HALT:
                 return null;
             case ADD:
-//                System.out.println(String.format("adding %d+%d and storing in %d", params[0], params[1], params[2]));
                 return params[0] + params[1];
             case MULTIPLY:
-//                System.out.println(String.format("multiply %d*%d and storing in %d", params[0], params[1], params[2]));
                 return params[0] * params[1];
             case INPUT:
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Please insert a number");
-                return scanner.nextInt();
+                return inputCommand.invoke();
             case OUTPUT:
                 return params[0];
             case JUMP_TRUE:
@@ -85,7 +82,6 @@ public class CommandToken {
 
     public boolean isJump() {
         if (type.isJump()) {
-            System.out.println("Command is jump - " + type + " value is " + params[0] + "And jump decistion is <" + isJumpConditionTrue() + ">");
         }
         return type.isJump() && isJumpConditionTrue();
     }
@@ -100,4 +96,5 @@ public class CommandToken {
                 throw new IllegalStateException("Command of type <" + type + "> is not a jump");
         }
     }
+
 }
